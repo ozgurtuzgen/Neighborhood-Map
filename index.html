@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>  
-        <meta charset="utf-8">
-        <title>Neighborhood Map</title>		
-        <link rel="stylesheet" href="css/style.css">
+
+<head>
+    <meta charset="utf-8">
+    <title>Neighborhood Map</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
+
 <body>
-    <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
-    <script src="src/app.js"></script>    
+    <div class="row">
+        <!-- list / filter area -->
+        <section class="col-md-4">
+            <h2>Marker Filter</h2>
+            <div id='filter-input'>
+
+            </div>
+            <h2>Marker List</h2>
+            <div id='place-list'>
+            </div>
+        </section>
+
+        <!-- map area -->
+        <div id='map' class="col-md-8"></div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="src/app.js"></script>
 </body>
+
 </html>
