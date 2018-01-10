@@ -21,6 +21,16 @@
             </div>
         </section>
 
+        <section id="main" data-bind="visible: places().length">                        
+            <ul id="place-list" data-bind="foreach: places()">
+                <li>
+                    <div class="view">                        
+                        <label data-bind="text: name"></label>                        
+                    </div>                    
+                </li>
+            </ul>
+        </section>
+
         <!-- map area -->
         <div id='map' class="col-md-8"></div>
 
