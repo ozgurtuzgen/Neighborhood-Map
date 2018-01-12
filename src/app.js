@@ -12,6 +12,8 @@
 
     var ViewModel = function (cache) {
 
+        var markers = [];
+
         var getPlaces = function (initialList) {
             fetch('https://api.foursquare.com/v2/venues/explore?near=Ankara&oauth_token=3EXVT5GGO1OBN4511E0LPNLFLWAOTYRHLXXRFUVXYGYHD22U&v=20180109')
                 .then(function (response) {
@@ -23,11 +25,21 @@
                 });
 
             function addPlaces(response) {
-                var items = response.response.groups[0].items.slice(1,20);
+                var items = response.response.groups[0].items.slice(1, 20);
 
                 items.forEach(element => {
                     var newPlace = new Place(element.venue.id, element.venue.name, element.venue.location.lat, element.venue.location.lng, element.venue.categories[0].name, element.venue.rating);
                     initialList.push(newPlace);
+
+                    // Create a marker per location, and put into markers array.
+                    var marker = new google.maps.Marker({
+                        position: element.venue.location,
+                        title: element.venue.name,                        
+                        id: element.venue.id,
+                        map: map                        
+                    });
+
+                    markers.push(marker);
                 });
             };
         };
@@ -51,3 +63,14 @@
     var viewModel = new ViewModel(cache || []);
     ko.applyBindings(viewModel);
 }());
+
+var initMap = function () {
+    var latlng = new google.maps.LatLng(40, 33);
+    var myOptions =
+        {
+            zoom: 11,
+            center: latlng
+        };
+
+    map = new google.maps.Map(document.getElementById("mapDiv"), myOptions);
+};
