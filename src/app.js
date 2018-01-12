@@ -12,6 +12,8 @@
 
     var ViewModel = function (cache) {
 
+        var self = this;
+
         var markers = [];
 
         var getPlaces = function (initialList) {
@@ -34,9 +36,39 @@
                     // Create a marker per location, and put into markers array.
                     var marker = new google.maps.Marker({
                         position: element.venue.location,
-                        title: element.venue.name,                        
+                        title: element.venue.name,
                         id: element.venue.id,
-                        map: map                        
+                        map: map
+                    });
+
+                    // Create a single infowindow to be used with the place details information
+                    // so that only one is open at once.
+                    var placeInfoWindow = new google.maps.InfoWindow();
+                    // If a marker is clicked, do a place details search on it in the next function.
+                    marker.addListener('click', function () {
+
+                        self.places().forEach((place)=>{
+                            if(place.id() == marker.id){
+                                console.log('found');
+                                placeInfoWindow.marker = marker;
+                                var innerHTML = '<div>';
+                                if (place.name()) {
+                                    innerHTML += '<strong>' + place.name() + '</strong>';
+                                }
+                                if (place.category()) {
+                                    innerHTML += '<strong>' + place.category() + '</strong>';
+                                }
+
+                                innerHTML += '</div>';
+                                placeInfoWindow.setContent(innerHTML);
+                                placeInfoWindow.open(map, marker);
+                                // Make sure the marker property is cleared if the infowindow is closed.
+                                placeInfoWindow.addListener('closeclick', function () {
+                                    placeInfoWindow.marker = null;
+                                });
+                            }
+                        });
+                        
                     });
 
                     markers.push(marker);
@@ -45,12 +77,12 @@
         };
 
         if (!cache || cache.length < 1) {
-            this.places = ko.observableArray();
-            getPlaces(this.places);
+            self.places = ko.observableArray();
+            getPlaces(self.places);
         }
         else {
             // map the places get from local storage
-            this.places = ko.observableArray(places.map(function (place) {
+            self.places = ko.observableArray(places.map(function (place) {
                 return new Place(place.id, place.name, place.lat, place.long, place.category, place.rating);
             }));
         }
