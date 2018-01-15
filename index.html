@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Neighborhood Map</title>
+    <link rel="stylesheet" href="css/KoGrid.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
@@ -23,7 +24,7 @@
             </div>
         </section>
 
-        <section id="main">
+        <!-- <section id="main">
             <ul id="place-list" data-bind="foreach: $root.places">
                 <li>
                     <div class="view">
@@ -32,15 +33,18 @@
                 </li>
             </ul>
             
-        </section>
-        <select multiple="multiple" height="200" data-bind="options:$root.places, optionsText:'name'"></select>
+        </section> -->
+
+        <div class="gridStyle" data-bind="koGrid: gridOptions"></div>
 
         <!-- map area -->
         <div id="mapDiv" class="col-md-8"></div>
 
     </div>
 
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="src\extLib/koGrid-2.1.1.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-sgrql9d5OKTJF0k7IivigaTJnExEL0A&v=3&callback=initMap"></script>
     <script src="src/app.js"></script>
 </body>

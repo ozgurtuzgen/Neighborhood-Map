@@ -1,3 +1,9 @@
 #mapDiv {
     height: 250px;
 }
+
+.gridStyle {
+    border: 1px solid rgb(212,212,212);    
+    height: 300px;
+    margin: 20px;
+}
