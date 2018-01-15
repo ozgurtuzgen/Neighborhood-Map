@@ -1,4 +1,4 @@
-var hede = function () {
+var loadApp = function () {
     'use strict';
 
     var Place = function (id, name, lat, long, category, rating) {
@@ -15,6 +15,10 @@ var hede = function () {
         var self = this;
         self.places = ko.observableArray();
         self.markers = [];
+        self.filterPlaces = function() {
+            // alert("filter triggered");
+            self.places.splice(2,10);
+        };
 
         var getPlaces = function () {
             fetch('https://api.foursquare.com/v2/venues/explore?near=Ankara&oauth_token=3EXVT5GGO1OBN4511E0LPNLFLWAOTYRHLXXRFUVXYGYHD22U&v=20180109')
@@ -34,7 +38,7 @@ var hede = function () {
             var items = response.response.groups[0].items.slice(1, 20);
             items.forEach(element => {
                 var newPlace = new Place(element.venue.id, element.venue.name, element.venue.location.lat, element.venue.location.lng, element.venue.categories[0].name, element.venue.rating);
-                self.places.push(newPlace);
+                self.places().push(newPlace);
 
                 // Create a marker per location, and put into markers array.
                 var marker = new google.maps.Marker({
@@ -79,15 +83,10 @@ var hede = function () {
         };
 
         if (!cache || cache.length < 1) {
-            getPlaces(self.places);
+            getPlaces(self.places());
         }
         else {
             addPlaces(cache);
-
-            // // map the places get from local storage
-            // self.places = ko.observableArray(places.map(function (place) {
-            //     return new Place(place.id, place.name, place.lat, place.long, place.category, place.rating);
-            // }));
         }
     };
 
@@ -109,5 +108,5 @@ var initMap = function () {
 
     map = new google.maps.Map(document.getElementById("mapDiv"), myOptions);
 
-    hede();
+    loadApp();
 };

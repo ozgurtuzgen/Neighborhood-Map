@@ -14,22 +14,26 @@
         <section class="col-md-4">
             <h2>Marker Filter</h2>
             <div id='filter-input'>
-
+                <input id="search-text" type="text">
+                <input id="search-button" type="button" value="Search" data-bind="click: $root.filterPlaces">
             </div>
             <h2>Marker List</h2>
             <div id='place-list'>
+                
             </div>
         </section>
 
-        <section id="main" data-bind="visible: places().length">                        
-            <ul id="place-list" data-bind="foreach: places()">
+        <section id="main">
+            <ul id="place-list" data-bind="foreach: $root.places">
                 <li>
-                    <div class="view">                        
-                        <label data-bind="text: name"></label>                        
-                    </div>                    
+                    <div class="view">
+                        <label data-bind="text: name"></label>
+                    </div>
                 </li>
             </ul>
+            
         </section>
+        <select multiple="multiple" height="200" data-bind="options:$root.places, optionsText:'name'"></select>
 
         <!-- map area -->
         <div id="mapDiv" class="col-md-8"></div>
