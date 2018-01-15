@@ -16,7 +16,16 @@ var loadApp = function () {
         self.places = ko.observableArray();
         self.markers = [];
         self.selectedItems = ko.observableArray();
-        self.gridOptions = { displaySelectionCheckbox:false, data: self.places, showFilter: false, showColumnMenu: false, multiSelect:false, selectedItems: self.selectedItems };
+        self.gridOptions = { 
+            displaySelectionCheckbox:false, 
+            data: self.places, 
+            showFilter: false, 
+            showColumnMenu: false, 
+            multiSelect:false, 
+            selectedItems: self.selectedItems,
+            footerVisible: false,
+            enableColumnResize: false
+        };
         self.filterPlaces = function () {
             // alert("filter triggered");
             // self.places.splice(2, 10);

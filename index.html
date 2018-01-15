@@ -12,30 +12,15 @@
 <body>
     <div class="row">
         <!-- list / filter area -->
-        <section class="col-md-4">
+        <section class="col-md-4">            
             <h2>Marker Filter</h2>
             <div id='filter-input'>
                 <input id="search-text" type="text">
                 <input id="search-button" type="button" value="Search" data-bind="click: $root.filterPlaces">
             </div>
             <h2>Marker List</h2>
-            <div id='place-list'>
-                
-            </div>
+            <div class="gridStyle" data-bind="koGrid: gridOptions"></div>
         </section>
-
-        <!-- <section id="main">
-            <ul id="place-list" data-bind="foreach: $root.places">
-                <li>
-                    <div class="view">
-                        <label data-bind="text: name"></label>
-                    </div>
-                </li>
-            </ul>
-            
-        </section> -->
-
-        <div class="gridStyle" data-bind="koGrid: gridOptions"></div>
 
         <!-- map area -->
         <div id="mapDiv" class="col-md-8"></div>
