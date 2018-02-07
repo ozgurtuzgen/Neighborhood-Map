@@ -14,10 +14,15 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <div id="sidebar-wrapper" class="sidebar-nav">
+            <div style="font-weight: bold; color: #999999;">
+                <h4>Filter:</h4>                
+                <!-- <input data-bind="event: { keyup: $root.filterPlaces($data,value)}" /> -->
+                <input data-bind="textInput: filterInput" />
+            </div>
             <div class="sidebar-brand" style="font-weight: bold; color: #999999;">
                 <h2>Places</h2>
             </div>
-            <ul id="side_bar" data-bind="foreach: $root.places">
+            <ul id="side_bar" data-bind="foreach: $root.filteredPlaces">
                 <li data-bind="text: name" style="color: #999999;">
                 </li>
             </ul>
