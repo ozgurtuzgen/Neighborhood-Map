@@ -20,17 +20,32 @@ var loadApp = function () {
         self.filterInput = ko.observable();
 
         self.filteredPlaces = ko.pureComputed(function () {
-            if(!self.filterInput()) {
-                return self.places(); 
+            if (!self.filterInput()) {
+                self.markers.forEach(function (item) {
+                    item.setVisible(true);
+
+                });
+
+                return self.places();
             } else {
-                return ko.utils.arrayFilter(self.places(), function(p) {                    
+
+                self.markers.forEach(function (item) {
+                    if (item.title.toLowerCase().indexOf(self.filterInput().toLowerCase()) > -1) {
+                        item.setVisible(true);
+                    }
+                    else {
+                        item.setVisible(false);
+                    }
+                });
+
+                return ko.utils.arrayFilter(self.places(), function (p) {
                     return p.name().toLowerCase().indexOf(self.filterInput().toLowerCase()) > -1;
                 });
             }
         }, self);
 
         self.filterPlaces = function (filterText) {
-            self.filterInput(filterText);            
+            self.filterInput(filterText);
         };
 
         self.filterInput.subscribe(self.filterPlaces);
