@@ -1,29 +1,31 @@
 var loadApp = function () {
     'use strict';
 
-    var Place = function (id, name, lat, long, category, rating) {
-        this.id = ko.observable(id);
-        this.name = ko.observable(name);
-        this.lat = ko.observable(lat);
-        this.long = ko.observable(long);
-        this.category = ko.observable(category);
-        this.rating = ko.observable(rating);
+    var Place = function (id, name, lat, long, category, rating, selected) {
+        var self = this;
+        self.id = ko.observable(id);
+        self.name = ko.observable(name);
+        self.lat = ko.observable(lat);
+        self.long = ko.observable(long);
+        self.category = ko.observable(category);
+        self.rating = ko.observable(rating);
+        self.isSelected = ko.computed(function () {
+            return selected() === self;
+        });
     };
 
     var ViewModel = function (cache) {
 
         var self = this;
         self.places = ko.observableArray();
-        // self.filteredPlaces = ko.observableArray();
         self.markers = [];
-        self.selectedItems = ko.observableArray();
+        self.selectedItem = ko.observable();
         self.filterInput = ko.observable();
 
         self.filteredPlaces = ko.pureComputed(function () {
             if (!self.filterInput()) {
                 self.markers.forEach(function (item) {
                     item.setVisible(true);
-
                 });
 
                 return self.places();
@@ -49,6 +51,23 @@ var loadApp = function () {
         };
 
         self.filterInput.subscribe(self.filterPlaces);
+
+        self.selectPlace = function (placeItem) {
+            self.selectedItem(placeItem);
+            self.selectMarker(placeItem);
+        };
+
+        self.selectMarker = function (markerItem) {
+            self.markers.forEach(function (item) {
+                if (item.id === markerItem.id()) {
+                    item.setAnimation(google.maps.Animation.BOUNCE);
+                }
+                else
+                {
+                    item.setAnimation(null);
+                }
+            });
+        };
 
         self.gridOptions = {
             displaySelectionCheckbox: false,
@@ -78,7 +97,7 @@ var loadApp = function () {
         var addPlaces = function (response) {
             var items = response.response.groups[0].items.slice(1, 20);
             items.forEach(element => {
-                var newPlace = new Place(element.venue.id, element.venue.name, element.venue.location.lat, element.venue.location.lng, element.venue.categories[0].name, element.venue.rating);
+                var newPlace = new Place(element.venue.id, element.venue.name, element.venue.location.lat, element.venue.location.lng, element.venue.categories[0].name, element.venue.rating, self.selectedItem);
                 self.places().push(newPlace);
 
                 // Create a marker per location, and put into markers array.
@@ -94,10 +113,13 @@ var loadApp = function () {
                 var placeInfoWindow = new google.maps.InfoWindow();
                 // If a marker is clicked, do a place details search on it in the next function.
                 marker.addListener('click', function () {
-
                     self.places().forEach((place) => {
                         if (place.id() == marker.id) {
-                            console.log('found');
+                            
+                            // select the place
+                            self.selectPlace(place);     
+
+                            //open the info window
                             placeInfoWindow.marker = marker;
                             var innerHTML = '<div>';
                             if (place.name()) {

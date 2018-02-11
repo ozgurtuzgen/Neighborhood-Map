@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Neighborhood Map</title>
-
-    <link rel="stylesheet" href="css/KoGrid.css">
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
@@ -15,15 +14,14 @@
         <!-- Sidebar -->
         <div id="sidebar-wrapper" class="sidebar-nav">
             <div style="font-weight: bold; color: #999999;">
-                <h4>Filter:</h4>                
-                <!-- <input data-bind="event: { keyup: $root.filterPlaces($data,value)}" /> -->
+                <h4>Filter:</h4>                                
                 <input data-bind="textInput: filterInput" />
             </div>
             <div class="sidebar-brand" style="font-weight: bold; color: #999999;">
                 <h2>Places</h2>
             </div>
             <ul id="side_bar" data-bind="foreach: $root.filteredPlaces">
-                <li data-bind="text: name" style="color: #999999;">
+                <li data-bind="text: name, click: $root.selectPlace, css: {selected: isSelected}" style="color: #999999;">
                 </li>
             </ul>
         </div>
@@ -35,12 +33,9 @@
                     <div class="col-lg-12">
                         <h1>
                             <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
-                            &nbsp;Map&nbsp;
-                            <!-- a href="#menu-toggle" class="btn btn-default" >Toggle Sidebar</a -->
-                        </h1>
-                        <!-- you can use tables or divs for the overall layout -->
-                        <div id="map_canvas"></div>
-                        <h1>Simple Sidebar</h1>
+                            &nbsp;Map&nbsp;                            
+                        </h1>                        
+                        <div id="map_canvas"></div>                        
                     </div>
                 </div>
             </div>
@@ -51,10 +46,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-sgrql9d5OKTJF0k7IivigaTJnExEL0A&v=3&callback=initMap"></script>
     <script src="src/app.js"></script>
