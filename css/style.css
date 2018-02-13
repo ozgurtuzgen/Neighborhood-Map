@@ -101,6 +101,8 @@ body {
   margin: 0;
   padding: 0;
   list-style: none;
+  color: #999999;
+  font-weight: bold;
 }
 .sidebar-nav li {
   text-indent: 20px;
@@ -122,6 +124,10 @@ body {
   height: 40px;
   font-size: 18px;
   line-height: 60px;
+}
+
+#side_bar {
+  font-weight: normal;
 }
 
 @media(min-width:768px) {

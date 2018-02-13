@@ -152,7 +152,6 @@ var loadApp = function () {
                             self.selectPlace(place);
                         }
                     });
-
                 });
 
                 self.markers.push(marker);

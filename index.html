@@ -13,15 +13,15 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <div id="sidebar-wrapper" class="sidebar-nav">
-            <div style="font-weight: bold; color: #999999;">
+            <div>
                 <h4>Filter:</h4>                                
                 <input data-bind="textInput: filterInput" />
             </div>
-            <div class="sidebar-brand" style="font-weight: bold; color: #999999;">
+            <div class="sidebar-brand">
                 <h2>Places</h2>
             </div>
             <ul id="side_bar" data-bind="foreach: $root.filteredPlaces">
-                <li data-bind="text: name, click: $root.selectPlace, css: {selected: isSelected}" style="color: #999999;">
+                <li data-bind="text: name, click: $root.selectPlace, css: {selected: isSelected}">
                 </li>
             </ul>
         </div>
