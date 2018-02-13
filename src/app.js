@@ -123,10 +123,18 @@ var loadApp = function () {
                             placeInfoWindow.marker = marker;
                             var innerHTML = '<div>';
                             if (place.name()) {
-                                innerHTML += '<strong>' + place.name() + '</strong>';
+                                innerHTML += '<strong>Place:</strong>';
+                                innerHTML += place.name();
+                                innerHTML += '<br>';
                             }
                             if (place.category()) {
-                                innerHTML += '<strong>' + place.category() + '</strong>';
+                                innerHTML += '<strong>Category:</strong>';
+                                innerHTML += place.category();
+                                innerHTML += '<br>';
+                            }
+                            if (place.rating()) {
+                                innerHTML += '<strong>Rating:</strong>';
+                                innerHTML += place.rating();
                             }
 
                             innerHTML += '</div>';
