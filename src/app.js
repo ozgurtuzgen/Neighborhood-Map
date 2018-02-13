@@ -21,6 +21,8 @@ var loadApp = function () {
         self.markers = [];
         self.selectedItem = ko.observable();
         self.filterInput = ko.observable();
+        // single instance of infowindow
+        self.placeInfoWindow = new google.maps.InfoWindow();
 
         self.filteredPlaces = ko.pureComputed(function () {
             if (!self.filterInput()) {
@@ -55,6 +57,7 @@ var loadApp = function () {
         self.selectPlace = function (placeItem) {
             self.selectedItem(placeItem);
             self.selectMarker(placeItem);
+            self.showInfoWindow(placeItem);
         };
 
         self.selectMarker = function (markerItem) {
@@ -62,12 +65,44 @@ var loadApp = function () {
                 if (item.id === markerItem.id()) {
                     item.setAnimation(google.maps.Animation.BOUNCE);
                 }
-                else
-                {
+                else {
                     item.setAnimation(null);
                 }
             });
         };
+
+        self.showInfoWindow = function (place) {
+            self.markers.forEach(function (item) {
+                if (item.id === place.id()) {
+
+                    //open the info window
+                    self.placeInfoWindow.marker = item;
+                    var innerHTML = '<div>';
+                    if (place.name()) {
+                        innerHTML += '<strong>Place:</strong>';
+                        innerHTML += place.name();
+                        innerHTML += '<br>';
+                    }
+                    if (place.category()) {
+                        innerHTML += '<strong>Category:</strong>';
+                        innerHTML += place.category();
+                        innerHTML += '<br>';
+                    }
+                    if (place.rating()) {
+                        innerHTML += '<strong>Rating:</strong>';
+                        innerHTML += place.rating();
+                    }
+
+                    innerHTML += '</div>';
+                    self.placeInfoWindow.setContent(innerHTML);
+                    self.placeInfoWindow.open(map, item);
+                    // Make sure the marker property is cleared if the infowindow is closed.
+                    self.placeInfoWindow.addListener('closeclick', function () {
+                        self.placeInfoWindow.marker = null;
+                    });
+                }
+            });
+        }
 
         self.gridOptions = {
             displaySelectionCheckbox: false,
@@ -108,42 +143,13 @@ var loadApp = function () {
                     map: map
                 });
 
-                // Create a single infowindow to be used with the place details information
-                // so that only one is open at once.
-                var placeInfoWindow = new google.maps.InfoWindow();
                 // If a marker is clicked, do a place details search on it in the next function.
                 marker.addListener('click', function () {
                     self.places().forEach((place) => {
                         if (place.id() == marker.id) {
-                            
+
                             // select the place
-                            self.selectPlace(place);     
-
-                            //open the info window
-                            placeInfoWindow.marker = marker;
-                            var innerHTML = '<div>';
-                            if (place.name()) {
-                                innerHTML += '<strong>Place:</strong>';
-                                innerHTML += place.name();
-                                innerHTML += '<br>';
-                            }
-                            if (place.category()) {
-                                innerHTML += '<strong>Category:</strong>';
-                                innerHTML += place.category();
-                                innerHTML += '<br>';
-                            }
-                            if (place.rating()) {
-                                innerHTML += '<strong>Rating:</strong>';
-                                innerHTML += place.rating();
-                            }
-
-                            innerHTML += '</div>';
-                            placeInfoWindow.setContent(innerHTML);
-                            placeInfoWindow.open(map, marker);
-                            // Make sure the marker property is cleared if the infowindow is closed.
-                            placeInfoWindow.addListener('closeclick', function () {
-                                placeInfoWindow.marker = null;
-                            });
+                            self.selectPlace(place);
                         }
                     });
 
