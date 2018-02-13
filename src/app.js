@@ -102,7 +102,7 @@ var loadApp = function () {
                     });
                 }
             });
-        }
+        };
 
         self.gridOptions = {
             displaySelectionCheckbox: false,
