@@ -95,7 +95,7 @@ var loadApp = function () {
                     }
 
                     innerHTML += '</div>';
-                    innerHTML += '<div style="border-top: 2px solid #2a0400;padding: 10px 0;margin: 15px 0;text-align: center;">Powered by Foursquare API</div>'
+                    innerHTML += '<div style="border-top: 2px solid #2a0400;padding: 10px 0;margin: 15px 0;text-align: center;">Powered by Foursquare API</div>';
                     self.placeInfoWindow.setContent(innerHTML);
                     self.placeInfoWindow.open(map, item);
                     // Make sure the marker property is cleared if the infowindow is closed.
@@ -199,5 +199,5 @@ var initMap = function () {
 
 // Error callback for Google Maps API request
 mapError = () => {
-    alert("Something went wrong!\nMap could not be loaded...")
+    alert("Something went wrong!\nMap could not be loaded...");
 };
