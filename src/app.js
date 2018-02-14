@@ -23,6 +23,7 @@ var loadApp = function () {
         self.filterInput = ko.observable();
         // single instance of infowindow
         self.placeInfoWindow = new google.maps.InfoWindow();
+        self.isSideBarToggled = ko.observable(false);
 
         self.filteredPlaces = ko.pureComputed(function () {
             if (!self.filterInput()) {
@@ -32,7 +33,7 @@ var loadApp = function () {
 
                 return self.places();
             } else {
-
+                // filter should be applied for both list and markers
                 self.markers.forEach(function (item) {
                     if (item.title.toLowerCase().indexOf(self.filterInput().toLowerCase()) > -1) {
                         item.setVisible(true);
@@ -81,12 +82,12 @@ var loadApp = function () {
                     if (place.name()) {
                         innerHTML += '<strong>Place:</strong>';
                         innerHTML += place.name();
-                        innerHTML += '<br>';
+                        innerHTML += '<hr style="margin: 6px 0;">';
                     }
                     if (place.category()) {
                         innerHTML += '<strong>Category:</strong>';
                         innerHTML += place.category();
-                        innerHTML += '<br>';
+                        innerHTML += '<hr style="margin: 6px 0;">';
                     }
                     if (place.rating()) {
                         innerHTML += '<strong>Rating:</strong>';
@@ -94,6 +95,7 @@ var loadApp = function () {
                     }
 
                     innerHTML += '</div>';
+                    innerHTML += '<div style="border-top: 2px solid #2a0400;padding: 10px 0;margin: 15px 0;text-align: center;">Powered by Foursquare API</div>'
                     self.placeInfoWindow.setContent(innerHTML);
                     self.placeInfoWindow.open(map, item);
                     // Make sure the marker property is cleared if the infowindow is closed.
@@ -115,6 +117,11 @@ var loadApp = function () {
             enableColumnResize: false
         };
 
+        self.toggleSideBar = function (vm, e) {
+            e.preventDefault();
+            self.isSideBarToggled(!self.isSideBarToggled());
+        };
+
         var getPlaces = function () {
             fetch('https://api.foursquare.com/v2/venues/explore?near=Ankara&oauth_token=3EXVT5GGO1OBN4511E0LPNLFLWAOTYRHLXXRFUVXYGYHD22U&v=20180109')
                 .then(function (response) {
@@ -126,6 +133,7 @@ var loadApp = function () {
                 })
                 .catch(function (error) {
                     console.log(new Error(error));
+                    alert("Something went wrong!\nPlaces could not be loaded...");
                 });
         };
 
@@ -156,6 +164,7 @@ var loadApp = function () {
 
                 self.markers.push(marker);
             });
+            self.filterPlaces("");
         };
 
         if (!cache || cache.length < 1) {
@@ -173,15 +182,6 @@ var loadApp = function () {
     var viewModel = new ViewModel(cache || []);
     ko.applyBindings(viewModel);
 
-    var myWrapper = $("#wrapper");
-    $("#menu-toggle").click(function (e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-        myWrapper.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function (e) {
-            // code to execute after transition ends
-            google.maps.event.trigger(map, 'resize');
-        });
-    });
 };
 
 var initMap = function () {
@@ -195,4 +195,9 @@ var initMap = function () {
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
     loadApp();
+};
+
+// Error callback for Google Maps API request
+mapError = () => {
+    alert("Something went wrong!\nMap could not be loaded...")
 };
